@@ -1,0 +1,16 @@
+{
+  "thread_pools": {
+    "dispatcher": {
+      "corePoolSize": 4,
+      "maxPoolSize": 20,
+      "queueSize": 1000,
+      "keepAliveTime": 5
+    },
+    "default": {
+      "corePoolSize": 2,
+      "maxPoolSize": 10,
+      "queueSize": 1000,
+      "keepAliveTime": 3
+    }
+  }
+}

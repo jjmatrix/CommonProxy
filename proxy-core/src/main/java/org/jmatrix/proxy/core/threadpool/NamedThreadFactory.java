@@ -1,4 +1,4 @@
-package org.jmatrix.proxy.core.utils;
+package org.jmatrix.proxy.core.threadpool;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;

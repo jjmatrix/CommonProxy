@@ -1,4 +1,4 @@
-package org.jmatrix.proxy.core;
+package org.jmatrix.proxy.server;
 
 /**
  * Server Entry
@@ -8,4 +8,7 @@ package org.jmatrix.proxy.core;
  */
 public interface Server {
 
+    void start();
+
+    void stop();
 }
