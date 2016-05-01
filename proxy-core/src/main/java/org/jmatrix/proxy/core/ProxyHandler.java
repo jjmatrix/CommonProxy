@@ -1,11 +1,13 @@
 package org.jmatrix.proxy.core;
 
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.jmatrix.proxy.core.mock.Visitor;
+import org.jmatrix.proxy.core.mock.VisitorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.SocketAddress;
 
 /**
  * Proxy Core Handler
@@ -13,11 +15,13 @@ import org.slf4j.LoggerFactory;
  * @author jmatrix
  * @date 16/4/3
  */
-public class ProxyHandler extends ChannelHandlerAdapter implements ChannelInboundHandler {
+public class ProxyHandler extends ChannelHandlerAdapter implements ChannelInboundHandler, ChannelOutboundHandler {
 
     private Logger logger = LoggerFactory.getLogger(ProxyHandler.class);
 
     private Dispatcher dispatcher;
+
+    private static Visitor visitor = VisitorFactory.createVisitor(VisitorFactory.VisitorType.HANDLER);
 
     public ProxyHandler(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
@@ -46,6 +50,8 @@ public class ProxyHandler extends ChannelHandlerAdapter implements ChannelInboun
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.debug("receive msg:{}", msg);
+        visitor.visitChannelRead(ctx, msg);
+
         dispatcher.dispatch(ctx, msg);
     }
 
@@ -66,8 +72,66 @@ public class ProxyHandler extends ChannelHandlerAdapter implements ChannelInboun
     public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
     }
 
+    /**
+     * Handler exception, otherwise the exception will forward to next ChannelHandler in the pipeline,<br/>
+     * that is Tail ChannelHandler.
+     *
+     * @param ctx
+     * @param cause
+     * @throws Exception
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
+    }
+
+    /**
+     * Outbound handler
+     *
+     * @param ctx
+     * @param localAddress
+     * @param promise
+     * @throws Exception
+     */
+    @Override
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception {
+
+    }
+
+    @Override
+    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise)
+            throws Exception {
+
+    }
+
+    @Override
+    public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+
+    }
+
+    @Override
+    public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+
+    }
+
+    @Override
+    public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+
+    }
+
+    @Override
+    public void read(ChannelHandlerContext ctx) throws Exception {
+
+    }
+
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        logger.debug("[outbound]write msg:{}", msg);
+        visitor.visitChannelWrite(ctx, msg);
+    }
+
+    @Override
+    public void flush(ChannelHandlerContext ctx) throws Exception {
+
     }
 }

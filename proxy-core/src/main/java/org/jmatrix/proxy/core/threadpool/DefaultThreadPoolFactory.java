@@ -6,6 +6,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
+ * Thread Pool Factory
+ *
  * @author jmatrix
  * @date 16/4/20
  */

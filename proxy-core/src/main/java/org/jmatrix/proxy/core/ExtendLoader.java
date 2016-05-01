@@ -43,10 +43,23 @@ public class ExtendLoader<S> {
         lazyLoad = false;
     }
 
+    /**
+     * Acquire preferred provider, create new instance default.
+     *
+     * @param preferred
+     * @return
+     */
     public S acquireProvider(String preferred) {
         return acquireProvider(preferred, true);
     }
 
+    /**
+     * Acquire preferred provider
+     *
+     * @param preferred
+     * @param newInstantiate true:create a new instance every time, false: share instance
+     * @return
+     */
     public S acquireProvider(String preferred, boolean newInstantiate) {
         if (!lazyLoad) {
             loadProvider();

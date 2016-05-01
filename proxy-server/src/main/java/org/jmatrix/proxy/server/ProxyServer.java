@@ -2,16 +2,13 @@ package org.jmatrix.proxy.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.jmatrix.proxy.core.Configuration;
-import org.jmatrix.proxy.core.Dispatcher;
 import org.jmatrix.proxy.core.ExtendLoader;
 import org.jmatrix.proxy.core.ProxyChannelInitializer;
 import org.jmatrix.proxy.core.threadpool.NamedThreadFactory;
@@ -19,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Proxy Server
+ *
  * @author jmatrix
  * @date 16/4/3
  */
@@ -55,6 +54,7 @@ public class ProxyServer implements Server {
                     .option(ChannelOption.SO_REUSEADDR, true)
                     .option(ChannelOption.SO_TIMEOUT, Configuration.getIntProperty("proxy.timeout", 3000))
                     .childOption(ChannelOption.SO_KEEPALIVE, Configuration.getBooleanProperty("proxy.channel.keepAlive", true))
+                    .childOption(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_REUSEADDR, true);
 
             channelFuture = serverBootstrap.bind(Configuration.getIntProperty("proxy.port", 2181)).sync();

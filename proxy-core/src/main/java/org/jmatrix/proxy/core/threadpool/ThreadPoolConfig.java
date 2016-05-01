@@ -22,8 +22,8 @@ public class ThreadPoolConfig {
 
     public ThreadPoolConfig() {
         this.corePoolSize = 2;
-        this.maxPoolSize = Runtime.getRuntime().availableProcessors();
-        this.queueSize = 100;
+        this.maxPoolSize = Runtime.getRuntime().availableProcessors() * 2;
+        this.queueSize = 1000;
         this.keepAliveTime = 5;
     }
 
