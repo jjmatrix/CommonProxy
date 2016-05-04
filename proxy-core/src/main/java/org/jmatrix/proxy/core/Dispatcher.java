@@ -25,6 +25,12 @@ abstract public class Dispatcher {
         usePool = Configuration.getBooleanProperty("proxy.dispatcher.usePool", true);
     }
 
+    /**
+     * Dispatch request
+     *
+     * @param ctx
+     * @param msg
+     */
     public void dispatch(ChannelHandlerContext ctx, Object msg) {
         if (usePool && threadPoolExecutor != null) {
             threadPoolExecutor.execute(() -> {
@@ -36,11 +42,10 @@ abstract public class Dispatcher {
     }
 
     protected void policyDispatch(ChannelHandlerContext ctx, Object msg) {
-        logger.debug("dispatch to new thread pool.");
-        try {
-            Thread.sleep(Configuration.getLongProperty("proxy.policy.sleep", 30000));
-        } catch (InterruptedException e) {
-
+        if (logger.isDebugEnabled()) {
+            if (!ctx.executor().inEventLoop(Thread.currentThread())) {
+                logger.debug("dispatch to new thread pool.");
+            }
         }
         doDispatch(ctx, msg);
     }

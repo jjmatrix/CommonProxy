@@ -1,6 +1,8 @@
 package org.jmatrix.proxy.redis;
 
 /**
+ * Protocol primitive
+ *
  * @author jmatrix
  * @date 16/4/4
  */

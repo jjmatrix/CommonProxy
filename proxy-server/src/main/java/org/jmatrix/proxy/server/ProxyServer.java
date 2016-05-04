@@ -42,7 +42,7 @@ public class ProxyServer implements Server {
     public void start() {
         bossGroup = new NioEventLoopGroup(Configuration.getIntProperty("proxy.nio.reactor.thread", 1), new NamedThreadFactory
                 ("proxy-reactor"));
-        workGroup = new NioEventLoopGroup(Configuration.getIntProperty("proxy.nio.work.thread", Runtime.getRuntime().availableProcessors()),
+        workGroup = new NioEventLoopGroup(Configuration.getIntProperty("proxy.nio.work.thread", Runtime.getRuntime().availableProcessors() * 2),
                 new NamedThreadFactory("proxy-work"));
         try {
             serverBootstrap = new ServerBootstrap();

@@ -1,7 +1,5 @@
 package org.jmatrix.proxy.core.mock;
 
-import org.jmatrix.proxy.core.exception.OperationNotSupportException;
-
 /**
  * Visitor Factory
  *

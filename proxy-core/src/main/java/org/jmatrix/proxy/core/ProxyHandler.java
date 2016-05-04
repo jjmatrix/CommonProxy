@@ -7,15 +7,13 @@ import org.jmatrix.proxy.core.mock.VisitorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.SocketAddress;
-
 /**
  * Proxy Core Handler
  *
  * @author jmatrix
  * @date 16/4/3
  */
-public class ProxyHandler extends ChannelHandlerAdapter implements ChannelInboundHandler, ChannelOutboundHandler {
+public class ProxyHandler extends ChannelDuplexHandler {
 
     private Logger logger = LoggerFactory.getLogger(ProxyHandler.class);
 
@@ -85,53 +83,10 @@ public class ProxyHandler extends ChannelHandlerAdapter implements ChannelInboun
         super.exceptionCaught(ctx, cause);
     }
 
-    /**
-     * Outbound handler
-     *
-     * @param ctx
-     * @param localAddress
-     * @param promise
-     * @throws Exception
-     */
-    @Override
-    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception {
-
-    }
-
-    @Override
-    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise)
-            throws Exception {
-
-    }
-
-    @Override
-    public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-
-    }
-
-    @Override
-    public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-
-    }
-
-    @Override
-    public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-
-    }
-
-    @Override
-    public void read(ChannelHandlerContext ctx) throws Exception {
-
-    }
-
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         logger.debug("[outbound]write msg:{}", msg);
         visitor.visitChannelWrite(ctx, msg);
-    }
-
-    @Override
-    public void flush(ChannelHandlerContext ctx) throws Exception {
-
+        super.write(ctx, msg, promise);
     }
 }
