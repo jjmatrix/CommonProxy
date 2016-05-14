@@ -1,5 +1,8 @@
 package org.jmatrix.proxy.core;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
 import org.jmatrix.proxy.core.threadpool.DefaultThreadPoolFactory;
 import org.jmatrix.proxy.core.threadpool.ThreadPoolConfig;
@@ -32,9 +35,11 @@ abstract public class Dispatcher {
      * @param msg
      */
     public void dispatch(ChannelHandlerContext ctx, Object msg) {
+        ByteBuf empty = ctx.channel().config().getAllocator().buffer(1024);
         if (usePool && threadPoolExecutor != null) {
             threadPoolExecutor.execute(() -> {
                 policyDispatch(ctx, msg);
+                empty.release();
             });
         } else {
             policyDispatch(ctx, msg);

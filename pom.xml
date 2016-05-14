@@ -15,6 +15,7 @@
         <module>proxy-redis</module>
         <module>proxy-http</module>
         <module>proxy-server</module>
+        <module>proxy-example</module>
     </modules>
 
     <properties>

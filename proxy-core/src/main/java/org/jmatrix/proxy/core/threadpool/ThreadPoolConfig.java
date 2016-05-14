@@ -21,9 +21,9 @@ public class ThreadPoolConfig {
     private TimeUnit keepAliveTimeUnit = TimeUnit.SECONDS;
 
     public ThreadPoolConfig() {
-        this.corePoolSize = 2;
-        this.maxPoolSize = Runtime.getRuntime().availableProcessors() * 2;
-        this.queueSize = 1000;
+        this.corePoolSize = Runtime.getRuntime().availableProcessors();
+        this.maxPoolSize = this.corePoolSize * 2;
+        this.queueSize = 2000;
         this.keepAliveTime = 5;
     }
 
