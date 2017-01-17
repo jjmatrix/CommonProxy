@@ -10,6 +10,7 @@ import org.jmatrix.proxy.redis.RedisProtocol;
 public class GetCommandResult implements CommandResult {
 
     private final static String EMPTY_RESULT = "$-1\r\n";
+    private final static String EMPTY_RESULT_T = "";
 
     private String content;
 
@@ -19,6 +20,10 @@ public class GetCommandResult implements CommandResult {
 
     public static GetCommandResult emptyResult() {
         return new GetCommandResult(EMPTY_RESULT);
+    }
+
+    public static GetCommandResult emptyResultT() {
+        return new GetCommandResult(EMPTY_RESULT_T);
     }
 
     public String getContent() {
@@ -32,6 +37,8 @@ public class GetCommandResult implements CommandResult {
     @Override
     public void write(ByteBuf byteBuf) {
         if (this.content.equals(EMPTY_RESULT)) {
+            byteBuf.writeBytes(content.getBytes());
+        } else if (this.content.equals(EMPTY_RESULT_T)) {
             byteBuf.writeBytes(content.getBytes());
         } else {
             byteBuf.writeByte(RedisProtocol.SIZE_BYTE);

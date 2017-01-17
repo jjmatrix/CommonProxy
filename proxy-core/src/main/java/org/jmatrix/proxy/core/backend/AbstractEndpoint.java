@@ -1,5 +1,6 @@
 package org.jmatrix.proxy.core.backend;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
@@ -14,7 +15,13 @@ abstract public class AbstractEndpoint {
 
     private int port;
 
-    public AbstractEndpoint(SocketAddress socketAddress){
+    public AbstractEndpoint(String hostname, int port) {
+        this.hostname = hostname;
+        this.port = port;
+        this.socketAddress = new InetSocketAddress(hostname, port);
+    }
+
+    public AbstractEndpoint(SocketAddress socketAddress) {
         this.socketAddress = socketAddress;
     }
 

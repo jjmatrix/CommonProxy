@@ -28,7 +28,7 @@ public class RedisDispatcher extends Dispatcher {
                 ((ChannelOutboundHandler) ctx.handler()).write(ctx, SetCommandResult.successResult(), ctx.newPromise());
                 ctx.flush();
             } else if (commandName.equalsIgnoreCase("get")) {
-                ((ChannelOutboundHandler) ctx.handler()).write(ctx, GetCommandResult.emptyResult(), ctx.newPromise());
+                ((ChannelOutboundHandler) ctx.handler()).write(ctx, GetCommandResult.emptyResultT(), ctx.newPromise());
                 ctx.flush();
             }
         } catch (Exception e) {

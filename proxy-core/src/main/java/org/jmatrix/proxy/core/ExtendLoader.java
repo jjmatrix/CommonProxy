@@ -49,7 +49,7 @@ public class ExtendLoader<S> {
      * @param preferred
      * @return
      */
-    public S acquireProvider(String preferred) {
+    public S  acquireProvider(String preferred) {
         return acquireProvider(preferred, true);
     }
 

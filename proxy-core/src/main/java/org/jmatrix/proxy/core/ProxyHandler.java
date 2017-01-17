@@ -19,7 +19,7 @@ public class ProxyHandler extends ChannelDuplexHandler {
 
     private Dispatcher dispatcher;
 
-    private static Visitor visitor = VisitorFactory.createVisitor(VisitorFactory.VisitorType.HANDLER);
+    private static Visitor visitorHandler = VisitorFactory.createVisitor(VisitorFactory.VisitorType.HANDLER);
 
     public ProxyHandler(Dispatcher dispatcher) {
         this.dispatcher = dispatcher;
@@ -28,6 +28,7 @@ public class ProxyHandler extends ChannelDuplexHandler {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
         logger.debug("register channel:{}.", ctx.channel().localAddress());
+        super.channelRegistered(ctx);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ProxyHandler extends ChannelDuplexHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.debug("receive msg:{}", msg);
-        visitor.visitChannelRead(ctx, msg);
+        visitorHandler.visitChannelRead(ctx, msg);
 
         dispatcher.dispatch(ctx, msg);
     }
@@ -86,7 +87,7 @@ public class ProxyHandler extends ChannelDuplexHandler {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         logger.debug("[outbound]write msg:{}", msg);
-        visitor.visitChannelWrite(ctx, msg);
+        visitorHandler.visitChannelWrite(ctx, msg);
         super.write(ctx, msg, promise);
     }
 }

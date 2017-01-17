@@ -48,7 +48,8 @@ public class ProxyServer implements Server {
             serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+//                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .handler(new ProxyAcceptHandler())
                     .childHandler(channelInitLoader.acquireProvider(preferred))
                     .option(ChannelOption.SO_BACKLOG, Configuration.getIntProperty("proxy.maxConnect", 100))
                     .option(ChannelOption.SO_REUSEADDR, true)
