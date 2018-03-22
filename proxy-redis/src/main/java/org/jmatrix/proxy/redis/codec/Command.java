@@ -1,6 +1,7 @@
 package org.jmatrix.proxy.redis.codec;
 
-import java.util.Arrays;
+import io.netty.buffer.ByteBuf;
+import org.jmatrix.proxy.redis.RedisProtocol;
 
 /**
  * @author jmatrix
@@ -64,5 +65,16 @@ public class Command {
         }
         builder.append("]}");
         return builder.toString();
+    }
+
+    public void write(ByteBuf byteBuf) {
+        byteBuf.writeByte(RedisProtocol.COUNT_BYTE);
+        byteBuf.writeInt(cmdLength);
+        for (int i = 0; i < cmdLength; i++) {
+            byteBuf.writeByte(RedisProtocol.SIZE_BYTE);
+            byteBuf.writeInt(argv[i].length);
+            byteBuf.writeBytes(argv[i]);
+            byteBuf.writeByte(RedisProtocol.CRLF_LEN);
+        }
     }
 }
